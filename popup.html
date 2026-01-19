@@ -109,16 +109,94 @@
       background: var(--border);
     }
 
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--text);
+    }
+
     .footer {
-      margin-top: 8px;
+      margin-top: 0;
       font-size: 11px;
       color: var(--muted);
       text-align: center;
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      background-color: var(--card);
+    }
+
+    .theme-switch {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 34px;
+      height: 20px;
+    }
+
+    .switch input { display: none; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border);
+      transition: .4s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--card);
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(14px);
     }
   </style>
 </head>
 
 <body>
+  <div class="header">
+    <h1>Cookie Injector</h1>
+    <div class="theme-switch">
+      <span>Light</span>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
   <div class="card">
 
     <label>PUI_PR value</label>

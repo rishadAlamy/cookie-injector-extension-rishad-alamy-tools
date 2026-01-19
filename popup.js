@@ -272,3 +272,29 @@ function escapeHTML(str) {
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m])
   );
 }
+
+// =======================
+// THEME HANDLING
+// =======================
+document.addEventListener("DOMContentLoaded", () => {
+  const themeToggle = document.getElementById("themeToggle");
+
+  // Load saved theme
+  chrome.storage.local.get("theme", (data) => {
+    if (data.theme === "light") {
+      document.body.classList.add("light");
+      themeToggle.checked = true;
+    }
+  });
+
+  // Theme toggle listener
+  themeToggle.addEventListener("change", () => {
+    if (themeToggle.checked) {
+      document.body.classList.add("light");
+      chrome.storage.local.set({ theme: "light" });
+    } else {
+      document.body.classList.remove("light");
+      chrome.storage.local.set({ theme: "dark" });
+    }
+  });
+});
