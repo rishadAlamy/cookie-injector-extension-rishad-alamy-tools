@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #020617;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --error: #ef4444;
+    }
+
+    body.light {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #020617;
+      --muted: #475569;
+      --border: #e2e8f0;
+    }
+
+    body {
+      margin: 0;
+      padding: 12px;
+      width: 270px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    label {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 7px 8px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    button {
+      flex: 1;
+      padding: 8px;
+      border-radius: 7px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .apply {
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      color: #020617;
+    }
+
+    .reload {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    #status {
+      margin-top: 8px;
+      font-size: 12px;
+      text-align: center;
+      display: none;
+    }
+
+    #status.success { color: var(--success); }
+    #status.error { color: var(--error); }
+
+    .cookie-list {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .cookie-list ul {
+      padding-left: 16px;
+      margin: 4px 0 0;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .toggle {
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    .footer {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .footer span {
+      color: var(--primary);
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="top-bar">
+      <h3>Cookie Injector</h3>
+      <div id="themeToggle" class="toggle">🌗</div>
+    </div>
+
+    <label>PUI_PR value</label>
+    <input id="value1" placeholder="Enter value">
+
+    <label>Second cookie (optional)</label>
+    <input id="name2" placeholder="Cookie name">
+    <input id="value2" placeholder="Cookie value">
+
+    <div class="actions">
+      <button id="apply" class="apply">Apply</button>
+      <button id="reload" class="reload">Reload</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div id="cookieList" class="cookie-list"></div>
+  </div>
+
+  <div class="footer">
+    Built by <span>Rishad Alamy Tools</span>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
