@@ -1,8 +1,8 @@
 # 🍪 Cookie Injector
 ### by **Rishad Alamy Tools**
 
-A simple Chrome extension to inject cookies into the current website.  
-Built for testing, development, and debugging.
+A lightweight Chrome extension to inject cookies into the current website.  
+Designed for testing, development, and debugging workflows.
 
 ---
 
@@ -10,8 +10,10 @@ Built for testing, development, and debugging.
 - Inject `PUI_PR` cookie easily
 - Add one optional second cookie
 - Reload the tab with one click
-- Light / Dark mode
-- Clean and simple UI
+- Automatically loads existing `PUI_PR` cookie (if present)
+- Stores last **5 used `PUI_PR` values** as selectable suggestions
+- Light / Dark mode toggle
+- Clean, modern UI
 - No background activity
 - No data collection
 
@@ -20,9 +22,9 @@ Built for testing, development, and debugging.
 ## 🖥️ Installation (Manual – Recommended)
 
 > This extension is **not published on the Chrome Web Store**.  
-> Installation is manual, free, and safe.
+> Manual installation is free, safe, and transparent.
 
-### 🔹 Step 1: Download the Project
+### 🔹 Step 1: Download
 - Download this project as a ZIP file
 - Right-click the ZIP file
 - Click **Extract All**
@@ -37,7 +39,7 @@ Built for testing, development, and debugging.
 ---
 
 ### 🔹 Step 3: Enable Developer Mode
-- In the top-right corner, turn ON **Developer mode**
+- Turn ON **Developer mode** (top-right corner)
 
 📌 This is required only once.
 
@@ -56,7 +58,7 @@ Built for testing, development, and debugging.
 Chrome extensions are installed **per profile**.
 
 If you use multiple Chrome profiles:
-- Make sure you install the extension in the **correct profile**
+- Install the extension in the **correct profile**
 - Repeat the steps for another profile if needed
 
 ---
@@ -64,28 +66,42 @@ If you use multiple Chrome profiles:
 ## 🚀 How to Use
 1. Open any website (`http` or `https`)
 2. Click the **RA icon** in the Chrome toolbar
-3. Enter the **PUI_PR** value
-4. (Optional) Enter second cookie name & value
-5. Click **Apply**
-6. Click **Reload**
+3. If a `PUI_PR` cookie already exists, it will be auto-filled
+4. Otherwise, you can:
+- Enter a new `PUI_PR` value, or
+- Select a value from **Suggestions** (previously used)
+5. (Optional) Enter a second cookie name & value
+6. Click **Apply**
+7. Click **Reload**
 
 Cookies are now active on the page.
 
 ---
 
+## 💡 Suggestions Feature
+- The last **5 used `PUI_PR` values** are saved locally
+- Values appear as a **dropdown suggestion list**
+- Selecting a suggestion fills the input field
+- Suggestions do NOT auto-fill unless you select them
+- Existing site cookie always takes priority
+
+---
+
 ## ⚠️ Important Notes
 - Does not work on `chrome://` pages
-- Cannot modify **HttpOnly** cookies (Chrome limitation)
-- Clearing browser cookies will remove injected cookies
-- Cookies are added only when you click **Apply**
+- Cannot modify **HttpOnly** cookies (Chrome security limitation)
+- Clearing browser cookies removes injected cookies
+- Cookies are added **only when you click Apply**
+- Stored suggestions are cleared when the extension is removed
 
 ---
 
 ## 🔒 Privacy & Safety
-- No data collection
+- No data is collected
 - No analytics
 - No external servers
-- Runs fully on your computer
+- All storage is local to your browser
+- You can inspect the source code at any time
 
 ---
 
