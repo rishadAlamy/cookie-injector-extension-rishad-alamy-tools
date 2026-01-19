@@ -1,61 +1,67 @@
 # 🍪 Cookie Injector
 ### by **Rishad Alamy Tools**
 
-A simple Chrome extension to **inject cookies into the current website**.  
+A simple Chrome extension to inject cookies into the current website.  
 Built for testing, development, and debugging.
 
+---
 
-## ✅ What you can do
-- Add `PUI_PR` cookie instantly
+## ✅ Features
+- Inject `PUI_PR` cookie easily
 - Add one optional second cookie
 - Reload the tab with one click
-- Light / Dark mode support
+- Light / Dark mode
+- Clean and simple UI
 - No background activity
 - No data collection
 
-## 🖥️ Installation (Windows – Step by Step)
+---
 
-> ⚠️ This extension is **not from Chrome Web Store**  
-> You need to install it manually (safe & free).
+## 🖥️ Installation (Manual – Recommended)
 
-
+> This extension is **not published on the Chrome Web Store**.  
+> Installation is manual, free, and safe.
 
 ### 🔹 Step 1: Download the Project
-- Download the ZIP file
-- Right-click the ZIP
+- Download this project as a ZIP file
+- Right-click the ZIP file
 - Click **Extract All**
 
-You will get a folder like this:
+---
 
-Cookie-Injector/
+### 🔹 Step 2: Open Chrome Extensions Page
+1. Open Google Chrome
+2. Go to:
 
 
-### 🔹 Step 2: Run the Installer
-1. Open the extracted folder
-2. **Double-click `install.bat`**
-
-This will:
-- Open Chrome Extensions page
-- Show simple instructions
-
+---
 
 ### 🔹 Step 3: Enable Developer Mode
-1. Open Chrome
-2. Go to **chrome://extensions**
-3. Turn ON **Developer mode** (top-right)
+- In the top-right corner, turn ON **Developer mode**
 
-📌 This is required only once
+📌 This is required only once.
 
+---
 
 ### 🔹 Step 4: Load the Extension
 1. Click **Load unpacked**
 2. Select the **`extension`** folder
 3. Click **Select Folder**
 
-✅ Extension installed successfully
-`
+✅ Extension installed successfully.
 
-## 🚀 How to Use the Extension
+---
+
+### 🔹 Note for Multiple Chrome Profiles
+Chrome extensions are installed **per profile**.
+
+If you use multiple Chrome profiles:
+- Make sure you install the extension in the **correct profile**
+- Repeat the steps for another profile if needed
+
+---
+
+## 🚀 How to Use
 1. Open any website (`http` or `https`)
 2. Click the **RA icon** in the Chrome toolbar
 3. Enter the **PUI_PR** value
@@ -65,18 +71,23 @@ This will:
 
 Cookies are now active on the page.
 
+---
 
 ## ⚠️ Important Notes
 - Does not work on `chrome://` pages
-- Cannot modify **HttpOnly** cookies
+- Cannot modify **HttpOnly** cookies (Chrome limitation)
 - Clearing browser cookies will remove injected cookies
 - Cookies are added only when you click **Apply**
 
+---
+
 ## 🔒 Privacy & Safety
-- No data collected
-- No internet requests
+- No data collection
+- No analytics
+- No external servers
 - Runs fully on your computer
-- Open for inspection
+
+---
 
 ## 👤 Credits
 Built by  
