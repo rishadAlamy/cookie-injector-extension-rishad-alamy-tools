@@ -6,6 +6,12 @@ Built for testing, development, and internal debugging workflows.
 
 ---
 
+## 🎬 Demo
+
+[Watch a video demonstration of the extension in action.](./screenshots/demo.mov)
+
+---
+
 ## ✨ Features
 
 - Inject `PUI_PR` cookie easily
