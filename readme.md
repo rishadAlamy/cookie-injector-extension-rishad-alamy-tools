@@ -8,7 +8,7 @@ Built for testing, development, and internal debugging workflows.
 
 ## 🎬 Demo
 
-[Watch a video demonstration of the extension in action.](./screenshots/demo.mov)
+[Watch a video demonstration of the extension in action.](./screenshots/demo.mp4)
 
 ---
 
