@@ -1,29 +1,28 @@
-const body = document.body;
+// =======================
+// ELEMENT REFERENCES
+// =======================
+const valueInput = document.getElementById("value1");
+const name2Input = document.getElementById("name2");
+const value2Input = document.getElementById("value2");
+const applyBtn = document.getElementById("apply");
+const reloadBtn = document.getElementById("reload");
 const statusEl = document.getElementById("status");
 const cookieListEl = document.getElementById("cookieList");
-const valueInput = document.getElementById("value1");
 const suggestionsBox = document.getElementById("suggestions");
-const suggestionsSelect = document.getElementById("puiSuggestions");
+const suggestionsList = document.getElementById("puiSuggestions");
+const prTooltip = document.getElementById("prTooltip");
 
-// ---------------- THEME ----------------
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "light") body.classList.add("light");
+let prCache = {};
+let hoverInside = false;
 
-document.getElementById("themeToggle").onclick = () => {
-  body.classList.toggle("light");
-  localStorage.setItem(
-    "theme",
-    body.classList.contains("light") ? "light" : "dark"
-  );
-};
-
-// ---------------- LOAD EXISTING PUI_PR COOKIE ONLY ----------------
+// =======================
+// LOAD EXISTING PUI_PR COOKIE
+// =======================
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   const tab = tabs[0];
   if (!tab || !tab.url.startsWith("http")) return;
 
   const origin = new URL(tab.url).origin;
-
   chrome.cookies.get({ url: origin, name: "PUI_PR" }, (cookie) => {
     if (cookie && cookie.value) {
       valueInput.value = cookie.value;
@@ -31,30 +30,44 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   });
 });
 
-// ---------------- LOAD STORED SUGGESTIONS ----------------
+// =======================
+// LOAD PUI_PR HISTORY (CUSTOM LIST)
+// =======================
 chrome.storage.local.get(["puiHistory"], (data) => {
   const history = Array.isArray(data.puiHistory) ? data.puiHistory : [];
   if (!history.length) return;
 
-  history.forEach((val) => {
-    const opt = document.createElement("option");
-    opt.value = val;
-    opt.textContent = val;
-    suggestionsSelect.appendChild(opt);
-  });
-
   suggestionsBox.style.display = "block";
+  suggestionsList.innerHTML = "";
+
+  history.forEach((pr) => {
+    const item = document.createElement("div");
+    item.className = "suggestion-item";
+    item.textContent = pr;
+
+    item.addEventListener("mouseenter", () => {
+      hoverInside = true;
+      showPRHover(pr, item);
+    });
+
+    item.addEventListener("mouseleave", () => {
+      hoverInside = false;
+      hideTooltipWithDelay();
+    });
+
+    item.addEventListener("click", () => {
+      valueInput.value = pr;
+      prTooltip.style.display = "none";
+    });
+
+    suggestionsList.appendChild(item);
+  });
 });
 
-// When user selects a suggestion
-suggestionsSelect.onchange = (e) => {
-  if (e.target.value) {
-    valueInput.value = e.target.value;
-  }
-};
-
-// ---------------- APPLY COOKIES ----------------
-document.getElementById("apply").onclick = () => {
+// =======================
+// APPLY COOKIES
+// =======================
+applyBtn.onclick = () => {
   statusEl.style.display = "none";
   cookieListEl.innerHTML = "";
 
@@ -66,27 +79,23 @@ document.getElementById("apply").onclick = () => {
     }
 
     const cookies = [];
+    const prValue = valueInput.value.trim();
 
-    // ---- PUI_PR ----
-    const v1 = valueInput.value.trim();
-    if (v1) {
-      cookies.push({ name: "PUI_PR", value: v1 });
+    if (prValue) {
+      cookies.push({ name: "PUI_PR", value: prValue });
 
-      // 🔥 SAVE HISTORY (MAX 5, UNIQUE)
+      // Save history (max 5, unique)
       chrome.storage.local.get(["puiHistory"], (data) => {
         let history = Array.isArray(data.puiHistory) ? data.puiHistory : [];
-
-        history = history.filter((v) => v !== v1); // remove duplicate
-        history.unshift(v1);                       // add to top
-        history = history.slice(0, 5);             // keep max 5
-
+        history = history.filter((v) => v !== prValue);
+        history.unshift(prValue);
+        history = history.slice(0, 5);
         chrome.storage.local.set({ puiHistory: history });
       });
     }
 
-    // ---- SECOND COOKIE (OPTIONAL) ----
-    const n2 = document.getElementById("name2").value.trim();
-    const v2 = document.getElementById("value2").value.trim();
+    const n2 = name2Input.value.trim();
+    const v2 = value2Input.value.trim();
     if (n2 && v2) {
       cookies.push({ name: n2, value: v2 });
     }
@@ -107,22 +116,139 @@ document.getElementById("apply").onclick = () => {
           showError("Failed to apply cookies");
           return;
         }
-
-        showSuccess("Cookies applied. Please reload the tab.");
+        showSuccess("Cookies applied. Reload the tab.");
         showCookieList(cookies);
       }
     );
   });
 };
 
-// ---------------- RELOAD TAB ----------------
-document.getElementById("reload").onclick = () => {
+// =======================
+// RELOAD TAB
+// =======================
+reloadBtn.onclick = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.reload(tabs[0].id);
   });
 };
 
-// ---------------- UI HELPERS ----------------
+// =======================
+// PR HOVER HANDLING (FIXED)
+// =======================
+valueInput.addEventListener("mouseenter", () => {
+  hoverInside = true;
+  const pr = valueInput.value.trim();
+  if (pr) showPRHover(pr, valueInput);
+});
+
+valueInput.addEventListener("mouseleave", () => {
+  hoverInside = false;
+  hideTooltipWithDelay();
+});
+
+prTooltip.addEventListener("mouseenter", () => {
+  hoverInside = true;
+});
+
+prTooltip.addEventListener("mouseleave", () => {
+  hoverInside = false;
+  hideTooltipWithDelay();
+});
+
+function hideTooltipWithDelay() {
+  setTimeout(() => {
+    if (!hoverInside) {
+      prTooltip.style.display = "none";
+    }
+  }, 120);
+}
+
+function showPRHover(prNumber, anchor) {
+  if (!prNumber || isNaN(prNumber)) return;
+
+  const rect = anchor.getBoundingClientRect();
+
+  // Position tooltip ABOVE the anchor
+  const tooltipHeight = prTooltip.offsetHeight || 80;
+  prTooltip.style.top = rect.top - tooltipHeight - 6 + "px";
+  prTooltip.style.left = rect.left + 16 + "px";
+
+  if (!GITHUB_TOKEN) {
+    prTooltip.innerHTML =
+      "Add GitHub token in <b>config.js</b> to enable PR details";
+    prTooltip.style.display = "block";
+    return;
+  }
+
+  if (prCache[prNumber]) {
+    renderPR(prCache[prNumber], prNumber);
+    return;
+  }
+
+  fetch(
+    `https://api.github.com/repos/alamy-ops/product-ui-container/pulls/${prNumber}`,
+    {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`
+      }
+    }
+  )
+    .then((res) => {
+      if (!res.ok) throw new Error("Unauthorized");
+      return res.json();
+    })
+    .then((data) => {
+      const prData = {
+        title: data.title,
+        author: data.user.login
+      };
+      prCache[prNumber] = prData;
+      renderPR(prData, prNumber);
+    })
+    .catch(() => {
+      prTooltip.innerHTML = `PR #${prNumber}<br>Unable to fetch details`;
+      prTooltip.style.display = "block";
+    });
+}
+
+
+
+function renderPR(pr, prNumber) {
+  prTooltip.innerHTML = `
+    <div style="font-weight:600; margin-bottom:4px;">
+      ${escapeHTML(pr.title)}
+    </div>
+    <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">
+      Author: ${escapeHTML(pr.author)}
+    </div>
+    <button
+      id="openPrBtn"
+      style="
+        width:100%;
+        padding:6px;
+        border-radius:6px;
+        border:1px solid var(--border);
+        background:transparent;
+        color:var(--text);
+        font-size:12px;
+        cursor:pointer;
+      ">
+      Open PR on GitHub
+    </button>
+  `;
+
+  prTooltip.style.display = "block";
+
+  document.getElementById("openPrBtn").onclick = () => {
+    chrome.tabs.create({
+      url: `https://github.com/alamy-ops/product-ui-container/pull/${prNumber}`
+    });
+  };
+}
+
+// =======================
+// UI HELPERS
+// =======================
 function showSuccess(msg) {
   statusEl.textContent = msg;
   statusEl.className = "success";
@@ -136,13 +262,13 @@ function showError(msg) {
 }
 
 function showCookieList(cookies) {
-  const ul = document.createElement("ul");
-  cookies.forEach((c) => {
-    const li = document.createElement("li");
-    li.textContent = `${c.name} = ${c.value}`;
-    ul.appendChild(li);
-  });
+  cookieListEl.innerHTML =
+    "<strong>Applied cookies:</strong><br>" +
+    cookies.map(c => `${c.name} = ${c.value}`).join("<br>");
+}
 
-  cookieListEl.innerHTML = "<strong>Applied cookies:</strong>";
-  cookieListEl.appendChild(ul);
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, (m) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m])
+  );
 }

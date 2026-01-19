@@ -25,8 +25,8 @@
     body {
       margin: 0;
       padding: 12px;
-      width: 270px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      width: 280px;
+      font-family: system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
     }
@@ -35,12 +35,6 @@
       background: var(--card);
       border-radius: 10px;
       padding: 14px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
-
-    h3 {
-      margin: 0;
-      font-size: 15px;
     }
 
     label {
@@ -51,7 +45,7 @@
       margin-bottom: 4px;
     }
 
-    input, select {
+    input {
       width: 100%;
       padding: 7px;
       border-radius: 6px;
@@ -78,7 +72,7 @@
     }
 
     .apply {
-      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      background: var(--primary);
       color: #020617;
     }
 
@@ -98,22 +92,21 @@
     #status.success { color: var(--success); }
     #status.error { color: var(--error); }
 
-    .cookie-list {
-      margin-top: 8px;
+    #cookieList {
       font-size: 12px;
+      margin-top: 6px;
       color: var(--muted);
     }
 
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .suggestion-item {
+      padding: 6px 8px;
+      cursor: pointer;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .toggle {
-      font-size: 12px;
-      cursor: pointer;
-      color: var(--primary);
+    .suggestion-item:hover {
+      background: var(--border);
     }
 
     .footer {
@@ -122,52 +115,46 @@
       color: var(--muted);
       text-align: center;
     }
-
-    .footer strong {
-      color: var(--primary);
-      background: rgba(56, 189, 248, 0.1);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    body.light .footer strong {
-      background: rgba(56, 189, 248, 0.08);
-    }
-
-    select {
-  background-color: var(--card);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-select option {
-  background-color: var(--card);
-  color: var(--text);
-}
-
   </style>
 </head>
 
 <body>
   <div class="card">
-    <div class="top">
-      <h3>Cookie Injector</h3>
-      <div id="themeToggle" class="toggle">🌗</div>
-    </div>
 
     <label>PUI_PR value</label>
-    <input id="value1" placeholder="Enter value">
+    <div style="position:relative;">
+      <input id="value1" placeholder="Enter PR number">
 
-    <!-- Suggestions -->
-    <div id="suggestions" style="display:none;">
+      <div id="prTooltip" style="
+        display:none;
+        position:absolute;
+        top:100%;
+        left:0;
+        margin-top:4px;
+        background: var(--card);
+        color: var(--text);
+        border:1px solid var(--border);
+        padding:8px;
+        border-radius:6px;
+        font-size:12px;
+        max-width:240px;
+        z-index:100;
+        box-shadow:0 4px 12px rgba(0,0,0,0.3);
+      "></div>
+    </div>
+
+    <div id="suggestions" style="display:none; margin-top:6px;">
       <label>Suggestions</label>
-      <select id="puiSuggestions">
-        <option value="">Select previous value</option>
-      </select>
+      <div id="puiSuggestions" style="
+        border:1px solid var(--border);
+        border-radius:6px;
+        overflow:hidden;
+        background:var(--card);
+      "></div>
     </div>
 
     <label>Second cookie (optional)</label>
-    <input style="margin-bottom: 0.5rem;" id="name2" placeholder="Cookie name">
+    <input id="name2" placeholder="Cookie name">
     <input id="value2" placeholder="Cookie value">
 
     <div class="actions">
@@ -176,13 +163,14 @@ select option {
     </div>
 
     <div id="status"></div>
-    <div id="cookieList" class="cookie-list"></div>
+    <div id="cookieList"></div>
   </div>
 
   <div class="footer">
-    Built by <strong >Rishad Alamy Tools</strong>
+    Built by <strong>Rishad Alamy Tools</strong>
   </div>
 
+  <script src="config.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
