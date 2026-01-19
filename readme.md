@@ -125,7 +125,7 @@ Settings → Developer settings → Personal access tokens
 
 2. Paste your token:
 ```js
-const GITHUB_TOKEN = "ghp_your_token_here";
+const GITHUB_TOKEN = "ghp_your_token_here"; ```
 
 Save the file
 
